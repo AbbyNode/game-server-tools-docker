@@ -37,9 +37,7 @@ echo "eula=true" > "${MINECRAFT_DIR}/eula.txt"
 
 # Run STARTSCRIPT in background to generate default files
 log_info "Running ${STARTSCRIPT_PATH} to generate default files..."
-(
-    /bin/bash "${STARTSCRIPT_PATH}" &
-) &
+/bin/bash "${STARTSCRIPT_PATH}" &
 STARTSCRIPT_PID=$!
 
 # Wait for server.properties to be created
