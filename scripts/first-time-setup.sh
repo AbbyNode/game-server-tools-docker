@@ -3,12 +3,6 @@ set -euo pipefail
 
 source "$(dirname "$0")/common.sh"
 
-# Skip if already completed
-if [ -f "${SETUP_COMPLETE_FLAG}" ]; then
-    log_info "Setup already completed, skipping..."
-    exit 0
-fi
-
 log_info "=== Starting first time server setup ==="
 
 log_info "Creating Minecraft directory at ${MINECRAFT_DIR}..."
@@ -16,14 +10,6 @@ mkdir -p "${MINECRAFT_DIR}"
 
 log_info "Accepting Minecraft EULA..."
 echo "eula=true" > "${MINECRAFT_DIR}/eula.txt"
-
-# Link existing files
-
-
-# Set proper permissions
-log_info "Setting permissions..."
-chmod -R 755 "${MINECRAFT_DIR}" 2>/dev/null || true
-chmod 644 "${MINECRAFT_DIR}"/*.json 2>/dev/null || true
 
 post_start_setup() {
     if [ ! -f "${MINECRAFT_DIR}/server.properties" ]; then

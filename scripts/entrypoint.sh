@@ -4,11 +4,19 @@ set -euo pipefail
 source "$(dirname "$0")/common.sh"
 
 # Run initial setup
-bash "${SCRIPTS_DIR}/setup.sh"
+if [ ! -f "${SETUP_COMPLETE_FLAG}" ]; then
+    bash "${SCRIPTS_DIR}/first-time-setup.sh"
+else
+    log_info "First time setup already completed, skipping..."
+fi
 
 # Download modpack if needed
-bash "${SCRIPTS_DIR}/download.sh"
+if [ ! -f "${STARTSCRIPT_PATH}" ]; then
+    log_info "Start script not found at ${STARTSCRIPT_PATH}"
+    bash "${SCRIPTS_DIR}/download.sh"
+fi
 
 # Start the Minecraft server
 log_info "Starting Minecraft server with ${STARTSCRIPT_PATH}..."
+bash "${SCRIPTS_DIR}/pre-start.sh"
 exec /bin/bash "${STARTSCRIPT_PATH}"

@@ -3,14 +3,6 @@ set -euo pipefail
 
 source "$(dirname "$0")/common.sh"
 
-# Check if modpack download is needed
-if [ -f "${STARTSCRIPT_PATH}" ]; then
-    log_info "Server files already exist (${STARTSCRIPT} found), skipping download"
-    exit 0
-fi
-
-log_info "Start script not found at ${STARTSCRIPT_PATH}"
-
 if [ -z "${MODPACK_URL:-}" ]; then
     log_warn "No MODPACK_URL provided and start script not found"
     exit 1
