@@ -1,26 +1,27 @@
 #!/bin/bash
 set -euo pipefail
 
-# Paths
-: "${SCRIPTS_DIR:=/scripts}"
-: "${TEMPLATES_DIR:=/templates}"
-: "${CONFIG_DIR:=/config}"
-: "${MINECRAFT_DIR:=/minecraft}"
+# Internal paths
+MINECRAFT_DIR="/minecraft"
+CONFIG_DIR="/config"
+SCRIPTS_DIR="/scripts"
+TEMPLATES_DIR="/templates"
+
+# Configurable vars
 : "${STARTSCRIPT:=startserver.sh}"
+STARTSCRIPT_PATH="${MINECRAFT_DIR}/${STARTSCRIPT}" # If this file exists, modpack has been downloaded and extracted.
 
-# If this file exists, modpack has been downloaded and extracted.
-STARTSCRIPT_PATH="${MINECRAFT_DIR}/${STARTSCRIPT}"
+# Minecraft subdirectories
+WORLD_DIR="${MINECRAFT_DIR}/world"
+MODS_DIR="${MINECRAFT_DIR}/mods"
+LOGS_DIR="${MINECRAFT_DIR}/logs"
 
+# Properties files
 DEFAULT_PROPS="${TEMPLATES_DIR}/default.properties"
+SERVER_PROPS="${MINECRAFT_DIR}/server.properties" # If this file exists, server is ready for post-setup tasks.
+LINKED_PROPS="${CONFIG_DIR}/server.properties" # If this file exists, first time setup is considered complete.
 
-# If this file exists, server is ready for post-setup tasks.
-SERVER_PROPS="${MINECRAFT_DIR}/server.properties"
-
-# If this file exists, first time setup is considered complete.
-LINKED_PROPS="${CONFIG_DIR}/server.properties"
-
-LOG_FILE="${MINECRAFT_DIR}/logs/modpack-setup.log"
-
+LOG_FILE="${LOGS_DIR}/modpack-setup.log"
 log_info() {
     echo "[INFO] $(date '+%Y-%m-%d %H:%M:%S') - $*" | tee -a "${LOG_FILE}"
 }

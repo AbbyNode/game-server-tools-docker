@@ -10,7 +10,7 @@ if [ ! -f "${LINKED_PROPS}" ]; then
 fi
 ln -sf "${LINKED_PROPS}" "${SERVER_PROPS}"
 
-log_info "============ Linking existing .json files from config ============"
+log_info "============ Linking json config files ============"
 shopt -s nullglob
 for file in "${CONFIG_DIR}"/*.json; do
     log_info "Linking $(basename "$file") to Minecraft directory..."

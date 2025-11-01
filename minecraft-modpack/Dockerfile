@@ -6,4 +6,6 @@ RUN chmod +x /scripts/*.sh
 
 COPY ./templates /templates
 
+EXPOSE 25565
+
 ENTRYPOINT ["/scripts/entrypoint.sh"]

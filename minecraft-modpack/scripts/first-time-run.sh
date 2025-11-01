@@ -41,8 +41,7 @@ bash "${STARTSCRIPT_PATH}" &
 STARTSCRIPT_PID=$!
 
 log_info "============ Waiting for world generation to complete ============"
-WORLD_DIR="${MINECRAFT_DIR}/world"
-MAX_WAIT=300  # 5 minutes maximum wait
+MAX_WAIT=600  # 10 minutes maximum wait
 ELAPSED=0
 
 while [ $ELAPSED -lt $MAX_WAIT ]; do
@@ -63,13 +62,13 @@ if [ $ELAPSED -ge $MAX_WAIT ]; then
     log_warn "World generation check timed out after ${MAX_WAIT} seconds"
 fi
 
-# Update server.properties
-bash "${SCRIPTS_DIR}/set-properties.sh"
-
 # Kill the initial STARTSCRIPT process
 log_info "============ Stopping initial ${STARTSCRIPT_PATH} process ============"
 kill "${STARTSCRIPT_PID}" || true
 wait "${STARTSCRIPT_PID}" 2>/dev/null || true
+
+log_info "============ Setting up server properties and config files ============"
+bash "${SCRIPTS_DIR}/setup-properties.sh"
 
 log_info "============ First time setup complete ============"
 

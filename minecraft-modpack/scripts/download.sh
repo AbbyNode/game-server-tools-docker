@@ -38,6 +38,6 @@ if [ ! -f "${STARTSCRIPT_PATH}" ]; then
     log_error "${STARTSCRIPT} not found at ${STARTSCRIPT_PATH}"
     exit 1
 fi
-
 chmod +x "${STARTSCRIPT_PATH}"
-log_info "Modpack download complete"
+
+log_info "============ Modpack download complete ============"
