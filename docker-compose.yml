@@ -7,8 +7,6 @@ services:
     ports:
       - "25565:25565"
     volumes:
-      - ./scripts:/scripts
-
       - minecraft-data:/minecraft
       - ./data/world:/minecraft/world
       - ./data/mods:/minecraft/mods
