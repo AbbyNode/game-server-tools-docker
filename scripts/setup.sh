@@ -3,12 +3,6 @@ set -euo pipefail
 
 source "$(dirname "$0")/common.sh"
 
-# If this file exists, first time setup is considered complete
-SETUP_COMPLETE_FLAG="${CONFIG_DIR}/server.properties"
-
-# If this file exists, server is ready for post-setup
-READY_FOR_SETUP_FLAG="${MINECRAFT_DIR}/server.properties"
-
 # Skip if already completed
 if [ -f "${SETUP_COMPLETE_FLAG}" ]; then
     log_info "Setup already completed, skipping..."
@@ -23,7 +17,8 @@ mkdir -p "${MINECRAFT_DIR}"
 log_info "Accepting Minecraft EULA..."
 echo "eula=true" > "${MINECRAFT_DIR}/eula.txt"
 
-# Link existing files 
+# Link existing files
+
 
 # Set proper permissions
 log_info "Setting permissions..."
