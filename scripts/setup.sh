@@ -1,17 +1,67 @@
 #!/bin/bash
 set -euo pipefail
 
-# first move the files to /config
-mkdir -p /config
-mv /minecraft/server.properties      /config/server.properties
-mv /minecraft/banned-players.json    /config/banned-players.json
-mv /minecraft/banned-ips.json        /config/banned-ips.json
-mv /minecraft/ops.json               /config/ops.json
-mv /minecraft/whitelist.json         /config/whitelist.json
+source "$(dirname "$0")/common.sh"
 
-# Create symbolic links for configuration files and directories to allow container directory binding
-ln -sf /config/server.properties      /minecraft/server.properties
-ln -sf /config/banned-players.json    /minecraft/banned-players.json
-ln -sf /config/banned-ips.json        /minecraft/banned-ips.json
-ln -sf /config/ops.json               /minecraft/ops.json
-ln -sf /config/whitelist.json         /minecraft/whitelist.json
+SETUP_FLAG="${MINECRAFT_DIR}/.setup_complete"
+
+# Skip if already completed
+if [ -f "${SETUP_FLAG}" ]; then
+    log_info "Setup already completed, skipping..."
+    exit 0
+fi
+
+# If called with --wait-for-server, wait for server files to generate
+if [ "${1:-}" = "--wait-for-server" ]; then
+    log_info "Waiting for server files to be generated..."
+    while [ ! -f "${MINECRAFT_DIR}/server.properties" ]; do
+        sleep 5
+    done
+    sleep 10  # Give it time to finish initialization
+fi
+
+log_info "=== Starting Server Setup ==="
+
+# Accept EULA
+if [ ! -f "${MINECRAFT_DIR}/eula.txt" ]; then
+    log_info "Accepting Minecraft EULA..."
+    echo "eula=true" > "${MINECRAFT_DIR}/eula.txt"
+fi
+
+# Create necessary directories
+log_info "Creating directories..."
+mkdir -p "${MINECRAFT_DIR}"/{logs,backups,plugins,mods} 2>/dev/null || true
+
+# Create default JSON files if they don't exist
+for file in ops.json whitelist.json banned-players.json banned-ips.json; do
+    if [ ! -f "${MINECRAFT_DIR}/${file}" ]; then
+        log_info "Creating ${file}..."
+        echo "[]" > "${MINECRAFT_DIR}/${file}"
+    fi
+done
+
+# Configure server.properties if it exists
+if [ -f "${MINECRAFT_DIR}/server.properties" ]; then
+    log_info "Configuring server.properties..."
+    sed -i \
+        -e 's/^allow-flight=.*/allow-flight=true/' \
+        -e 's/^difficulty=.*/difficulty=normal/' \
+        -e 's/^enforce-whitelist=.*/enforce-whitelist=true/' \
+        -e 's/^force-gamemode=.*/force-gamemode=false/' \
+        -e 's/^gamemode=.*/gamemode=survival/' \
+        -e 's/^pvp=.*/pvp=false/' \
+        -e 's/^simulation-distance=.*/simulation-distance=32/' \
+        -e 's/^spawn-protection=.*/spawn-protection=0/' \
+        -e 's/^view-distance=.*/view-distance=16/' \
+        -e 's/^white-list=.*/white-list=true/' \
+        "${MINECRAFT_DIR}/server.properties"
+fi
+
+# Set proper permissions
+log_info "Setting permissions..."
+chmod -R 755 "${MINECRAFT_DIR}" 2>/dev/null || true
+chmod 644 "${MINECRAFT_DIR}"/*.json 2>/dev/null || true
+
+# Mark setup as complete
+touch "${SETUP_FLAG}"
+log_info "=== Setup Complete ==="
