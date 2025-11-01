@@ -14,3 +14,13 @@ services:
     restart: unless-stopped
     stdin_open: true
     tty: true
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared-tunnel
+    command: tunnel --no-autoupdate run
+    env_file:
+      - .env
+    restart: unless-stopped
+    depends_on:
+      - minecraft
