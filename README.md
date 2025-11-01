@@ -10,10 +10,17 @@ curl -O https://raw.githubusercontent.com/AbbyNode/minecraft-modpack-docker/main
 curl -o .env https://raw.githubusercontent.com/AbbyNode/minecraft-modpack-docker/main/templates/.env.example
 
 # Run
+docker compose pull
 docker compose up -d
 
 # Show logs
 docker compose logs -f minecraft-modpack
+```
+
+## Subsequent runs
+
+```bash
+docker compose up --pull missing -d
 ```
 
 ## Edit `.env` to configure your modpack:
