@@ -7,6 +7,8 @@ source "$(dirname "$0")/common.sh"
 if [ ! -f "${STARTSCRIPT_PATH}" ]; then
     log_info "Start script not found at ${STARTSCRIPT_PATH}"
     bash "${SCRIPTS_DIR}/download.sh"
+else
+    log_info "Start script found at ${STARTSCRIPT_PATH}, skipping download..."
 fi
 
 # Run initial setup
