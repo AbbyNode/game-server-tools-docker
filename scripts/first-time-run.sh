@@ -12,7 +12,7 @@ source "$(dirname "$0")/common.sh"
 #region Download and EULA
 # ========================================
 
-log_info "===== Starting first time server setup ====="
+log_info "============ Starting first time server setup ============"
 
 log_info "Creating Minecraft directory at ${MINECRAFT_DIR}..."
 mkdir -p "${MINECRAFT_DIR}"
@@ -107,7 +107,7 @@ log_info "Stopping initial ${STARTSCRIPT_PATH} process..."
 kill "${STARTSCRIPT_PID}" || true
 wait "${STARTSCRIPT_PID}" 2>/dev/null || true
 
-log_info "===== Setup Complete ====="
+log_info "============ First time setup complete ============"
 
 # Restart the server normally
 exec "${SCRIPTS_DIR}/regular-run.sh"

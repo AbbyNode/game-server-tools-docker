@@ -3,6 +3,7 @@
 
 * Borgmatic backups
 * Make server url automatic? most recent
+* Auto push backups to Athena
 
 example links
 https://mediafilez.forgecdn.net/files/7121/795/ServerFiles-4.14.zip

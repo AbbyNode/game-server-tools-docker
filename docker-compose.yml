@@ -9,11 +9,13 @@ services:
     volumes:
       - minecraft-data:/minecraft
       - ./data/world:/minecraft/world
-      - ./data/mods:/minecraft/mods
       - ./data/logs:/minecraft/logs
 
       - ./data/config:/config
-      - ./data/config/mods:/minecraft/config
+
+      - ./data/mods/jars:/minecraft/mods
+      - ./data/mods/config:/minecraft/config
+      - ./
     restart: unless-stopped
     stdin_open: true
     tty: true
