@@ -36,12 +36,12 @@ echo "eula=true" > "${MINECRAFT_DIR}/eula.txt"
 # ========================================
 
 # Run STARTSCRIPT in background to generate default files
-log_info "Running ${STARTSCRIPT_PATH} to generate default files..."
-/bin/bash "${STARTSCRIPT_PATH}" &
+log_info "============ Running ${STARTSCRIPT_PATH} to generate default files ============"
+bash "${STARTSCRIPT_PATH}" &
 STARTSCRIPT_PID=$!
 
 # Wait for server.properties to be created
-log_info "Waiting for server.properties to be created..."
+log_info "============ Waiting for server.properties to be created ============"
 while [ ! -f "${SERVER_PROPS}" ]; do
     sleep 5
 done
@@ -51,7 +51,7 @@ if [ -f "${DEFAULT_PROPS}" ]; then
     log_info "default.properties found at ${DEFAULT_PROPS}"
 
     # Process each property from default.properties
-    log_info "Configuring server.properties..."
+    log_info "============ Configuring server.properties ============"
     while IFS='=' read -r key value || [ -n "$key" ]; do
         # Skip comments and empty lines
         [[ "$key" =~ ^[[:space:]]*# ]] && continue

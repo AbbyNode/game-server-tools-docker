@@ -3,6 +3,7 @@ set -euo pipefail
 
 # Paths
 : "${SCRIPTS_DIR:=/scripts}"
+: "${TEMPLATES_DIR:=/templates}"
 : "${CONFIG_DIR:=/config}"
 : "${MINECRAFT_DIR:=/minecraft}"
 : "${STARTSCRIPT:=startserver.sh}"
