@@ -1,3 +1,7 @@
+#!/bin/bash
+set -euo pipefail
+
+source "$(dirname "$0")/common.sh"
 
 # Link any existing .json files
 for file in "${CONFIG_DIR}"/*.json; do
