@@ -1,4 +1,5 @@
 services:
+
   minecraft-modpack:
     image: eclarift/minecraft-modpack:latest
     container_name: minecraft-modpack
@@ -18,6 +19,12 @@ services:
     restart: unless-stopped
     stdin_open: true
     tty: true
+
+  mcaselector:
+    image: eclarift/mcaselector:latest
+    container_name: mcaselector
+    env_file:
+      - .env
 
 volumes:
   minecraft-data:
