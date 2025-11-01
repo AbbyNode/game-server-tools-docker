@@ -19,12 +19,14 @@ SERVER_PROPS="${MINECRAFT_DIR}/server.properties"
 # If this file exists, first time setup is considered complete.
 LINKED_PROPS="${CONFIG_DIR}/server.properties"
 
+LOG_FILE="${MINECRAFT_DIR}/logs/modpack-setup.log"
+
 log_info() {
-    echo "[INFO] $(date '+%Y-%m-%d %H:%M:%S') - $*"
+    echo "[INFO] $(date '+%Y-%m-%d %H:%M:%S') - $*" | tee -a "${LOG_FILE}"
 }
 log_error() {
-    echo "[ERROR] $(date '+%Y-%m-%d %H:%M:%S') - $*" >&2
+    echo "[ERROR] $(date '+%Y-%m-%d %H:%M:%S') - $*" | tee -a "${LOG_FILE}" >&2
 }
 log_warn() {
-    echo "[WARN] $(date '+%Y-%m-%d %H:%M:%S') - $*" >&2
+    echo "[WARN] $(date '+%Y-%m-%d %H:%M:%S') - $*" | tee -a "${LOG_FILE}" >&2
 }

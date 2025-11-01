@@ -26,5 +26,5 @@ if [ -f "${DEFAULT_PROPS}" ]; then
     done < "${DEFAULT_PROPS}"
 fi
 
-# Move the configured server.properties to linked location
-mv "${SERVER_PROPS}" "${LINKED_PROPS}"
+# Copy the configured server.properties to linked location
+cp "${SERVER_PROPS}" "${LINKED_PROPS}"

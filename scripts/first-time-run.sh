@@ -32,28 +32,13 @@ echo "eula=true" > "${MINECRAFT_DIR}/eula.txt"
 
 
 # ========================================
-#region Generation and Properties
+#region Generate default files
 # ========================================
 
 # Run STARTSCRIPT in background to generate default files
 log_info "============ Running ${STARTSCRIPT_PATH} to generate default files ============"
 bash "${STARTSCRIPT_PATH}" &
 STARTSCRIPT_PID=$!
-
-# Wait for server.properties to be created
-log_info "============ Waiting for server.properties to be created ============"
-while [ ! -f "${SERVER_PROPS}" ]; do
-    sleep 5
-done
-
-bash "${SCRIPTS_DIR}/set-properties.sh"
-
-#endregion
-
-
-# ========================================
-#region Restart
-# ========================================
 
 log_info "============ Waiting for world generation to complete ============"
 WORLD_DIR="${MINECRAFT_DIR}/world"
@@ -77,6 +62,9 @@ done
 if [ $ELAPSED -ge $MAX_WAIT ]; then
     log_warn "World generation check timed out after ${MAX_WAIT} seconds"
 fi
+
+# Update server.properties
+bash "${SCRIPTS_DIR}/set-properties.sh"
 
 # Kill the initial STARTSCRIPT process
 log_info "============ Stopping initial ${STARTSCRIPT_PATH} process ============"
