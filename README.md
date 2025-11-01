@@ -13,16 +13,16 @@ curl -o .env https://raw.githubusercontent.com/AbbyNode/minecraft-modpack-docker
 docker compose up -d
 
 # Show logs
-docker compose logs minecraft-modpack
+docker compose logs -f minecraft-modpack
 ```
 
 ## Edit `.env` to configure your modpack:
-Modify the `MODPACK_URL` in `.env` to use a different modpack.
+
+Modify the values in `.env` to use a different modpack.
 ```
 MODPACK_URL=https://mediafilez.forgecdn.net/files/7121/795/ServerFiles-4.14.zip
 STARTSCRIPT=startserver.sh
 ```
 
-## **Run the server:**
-```bash
-```
+You can usually find the server files in the Files tab of a modpack.
+https://www.curseforge.com/minecraft/modpacks/all-the-mods-10/files/7121777/additional-files

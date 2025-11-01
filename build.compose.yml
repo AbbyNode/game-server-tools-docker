@@ -2,23 +2,3 @@ services:
   minecraft-modpack:
     image: eclarift/minecraft-modpack:latest
     build: .
-    container_name: minecraft-modpack
-    env_file:
-      - .env
-    ports:
-      - "25565:25565"
-    volumes:
-      - minecraft-data:/minecraft
-      - ./data/world:/minecraft/world
-      - ./data/mods:/minecraft/mods
-      - ./data/logs:/minecraft/logs
-
-      - ./data/config:/config
-      - ./data/config/mods:/minecraft/config
-    restart: unless-stopped
-    stdin_open: true
-    tty: true
-
-volumes:
-  minecraft-data:
-    driver: local
