@@ -4,10 +4,10 @@
 set -euo pipefail
 
 # Paths
-SCRIPTS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-MINECRAFT_DIR="${MINECRAFT_DIR:-/minecraft}"
-STARTSCRIPT="${STARTSCRIPT:-startserver.sh}"
-STARTSCRIPT_PATH="${MINECRAFT_DIR}/${STARTSCRIPT}"
+: "${SCRIPTS_DIR:=/scripts}"
+: "${MINECRAFT_DIR:=/minecraft}"
+: "${STARTSCRIPT:=startserver.sh}"
+: "${STARTSCRIPT_PATH:=${MINECRAFT_DIR}/${STARTSCRIPT}}"
 
 # Logging functions
 log_info() {
