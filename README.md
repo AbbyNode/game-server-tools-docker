@@ -7,7 +7,7 @@ Run a Minecraft modded server with automated backups and chunk cleanup. Uses [it
 Download compose file
 
 ```bash
-curl -O https://raw.githubusercontent.com/AbbyNode/minecraft-modpack-docker/main/docker-compose.yml
+curl -O "https://raw.githubusercontent.com/AbbyNode/minecraft-modpack-docker/main/docker-compose.yml?$(date +%s)"
 ```
 
 Run setup container (creates .env, directories, and extracts scripts)
