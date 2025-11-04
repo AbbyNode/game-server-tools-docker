@@ -1,7 +1,13 @@
+
+# mains
+* gen world
+* server properties
+* whitelist
+* backups
+
+
 # What to do
 
-* Borgmatic backups
-* Make server url automatic? most recent
 * Auto push backups to Athena
 * get mods distant horizons https://www.curseforge.com/minecraft/mc-mods/distant-horizons
 * unmined server alongside https://github.com/ich777/docker-unmined
