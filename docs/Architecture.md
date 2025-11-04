@@ -43,15 +43,6 @@ setup/
 
 On first run, it extracts scripts to `data/setup-scripts/` and creates default configs in `data/config/`.
 
-### Shared Utilities
-
-Reusable bash helpers live under `setup/shared` and are mounted into containers at `/opt/shared` via a named volume populated by the `setup` service:
-
-- `lib/log.sh` — consistent logging to stdout/stderr and optional `LOG_FILE` tee
-- `url/resolve-curseforge-url.sh` — resolves CurseForge modpack pages to direct server file URLs
-
-Services that need these utilities mount the `shared-scripts` volume read-only at `/opt/shared`. The `setup` service mounts it read-write and populates it during the setup step.
-
 ## Custom Docker Images
 
 Custom images are built for Borgmatic and MCASelector to include project-specific scripts and templates:

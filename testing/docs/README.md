@@ -173,7 +173,6 @@ print_summary
 
 ### test-integration.sh
 - All services defined in docker-compose.yml
-- Named volumes configured (borgmatic-data, shared-scripts)
 - Build compose file properly configured
 - Shared scripts volume populated by setup, used by minecraft
 - Data directory structure matches initialization

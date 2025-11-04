@@ -32,7 +32,6 @@
 - ✅ GENERIC_PACK environment variable setting
 - ✅ Integration with itzg/minecraft-server base
 - ✅ Dockerfile extends correct base image
-- ✅ Docker Compose volume mounts (data, shared-scripts)
 - ✅ Port mapping (25565)
 - ✅ Environment variables (EULA, MEMORY, AIKAR_FLAGS)
 - ✅ Interactive console (stdin/tty)
@@ -86,7 +85,6 @@
 
 ### 8. Full Stack Integration (55 tests)
 - ✅ All 8 services defined in docker-compose.yml
-- ✅ Named volumes (borgmatic-data, shared-scripts)
 - ✅ Build compose configuration
 - ✅ Image tagging (eclarift/* namespace)
 - ✅ Shared scripts volume workflow (setup populates, minecraft reads)
