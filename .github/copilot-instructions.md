@@ -32,9 +32,10 @@ docker compose up -d
 
 ### Code Execution
 * **Never** run scripts or bash code on the host machine.
+    * All scripts must run inside containers.
 * **Never** put code execution logic in compose files.
-* All scripts must run inside containers.
-* Containers may mount the working directory if needed for their operation.
+* **Never** bind mount files directly. Bind mounts should only be used for directories.
+    * Use `ln` inside containers to isolate files into bound directories.
 
 ### Cohesion with Existing Modules
 * New work should be cohesive with existing modules.
