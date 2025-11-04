@@ -35,6 +35,7 @@ services:
     container_name: borgmatic
     env_file:
       - .env
+      - .secrets
     volumes:
       - ./data:/mnt/source:ro
       - ./data/backups/borg-repository:/mnt/borg-repository
@@ -62,6 +63,7 @@ services:
     container_name: cloudflared
     env_file:
       - .env
+      - .secrets
     depends_on:
       - nginx
     command: tunnel run
