@@ -5,14 +5,11 @@ RUN apk add --no-cache bash curl jq
 
 WORKDIR /mcaselector
 
-# Get latest release from of MCSelector
-RUN \  
-    release_json=$(curl --silent "https://api.github.com/repos/Querz/mcaselector/releases/latest") && \  
-    latest_tag=$(echo "$release_json" | jq -r '.tag_name') && \  
-    echo "Latest tag is $latest_tag" && \  
-    download_url=$(echo "$release_json" | jq -r '.assets[] | select(.name | endswith(".jar")) | .browser_download_url') && \  
-    echo "Downloading from $download_url" && \  
-    curl -L "$download_url" -o mcaselector.jar && \  
+# Download latest MCSelector release
+RUN latest_url=$(curl -s "https://api.github.com/repos/Querz/mcaselector/releases/latest" \
+    | jq -r '.assets[] | select(.name | endswith(".jar")) | .browser_download_url') && \
+    echo "Downloading MCSelector from $latest_url" && \
+    curl -L "$latest_url" -o mcaselector.jar && \
     chmod +x mcaselector.jar
 
 COPY ./scripts /scripts
