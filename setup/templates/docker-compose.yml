@@ -2,6 +2,7 @@
 # For overrides, use docker-compose.override.yml file.
 
 services:
+  # ========== Core Setup ==========
   # To rerun setup, use `docker compose --profile setup run --pull always --rm setup`
   # This will update all submodules to the latest images as well.
   setup:
@@ -12,8 +13,8 @@ services:
     profiles:
       - setup
     restart: no
-  
-  # The core Minecraft server container
+
+  # ========== Core Minecraft server ==========
   server:
     image: itzg/minecraft-server:latest
     container_name: server
@@ -22,7 +23,13 @@ services:
     env_file:
       - .env
     volumes:
-      - ./data:/data
+      - minecraft-data:/data
+      - scripts/minecraft-server:/scripts:ro
+      - ./data/world:/data/world
+      - ./data/logs/minecraft:/data/logs
+      - ./data/mods/jars:/data/mods
+      - ./data/mods/config:/data/config
+    entrypoint: ["/bin/bash", "/scripts/entrypoint.sh"]
     stdin_open: true
     tty: true
     restart: unless-stopped
@@ -38,8 +45,11 @@ services:
     env_file:
       - .secrets
     volumes:
-      - ./data:/data:ro
       - borgmatic-data:/var/lib/borgmatic
+      - scripts/borgmatic:/scripts:ro
+      - ./data/world:/source:ro
+      - ./data/logs/borgmatic:/var/log/borgmatic
+    entrypoint: ["/bin/bash", "/scripts/entrypoint.sh"]
     restart: no
 
   # ========== World Maintenance ==========
@@ -49,8 +59,10 @@ services:
     image: eclipse-temurin:25-jre-alpine
     container_name: mcaselector
     volumes:
+      - scripts/mcaselector:/scripts:ro
       - ./data/world:/world
-      - ./data/config:/config
+      - ./data/config/mcaselector:/config
+    entrypoint: ["/bin/bash", "/scripts/entrypoint.sh"]
     restart: no
 
   # ========== Web Map Generation ==========
@@ -60,8 +72,10 @@ services:
     image: mcr.microsoft.com/dotnet/runtime:9.0-alpine
     container_name: unmined-generator
     volumes:
+      - scripts/unmined:/scripts:ro
       - ./data/world:/world:ro
       - unmined-data:/output
+    entrypoint: ["/bin/bash", "/scripts/entrypoint.sh"]
     restart: no
 
   # Webserver to serve the generated maps
@@ -69,10 +83,11 @@ services:
     image: nginx:alpine
     container_name: unmined-webserver
     volumes:
-      - unmined-data:/usr/share/nginx/html:ro
+      - unmined-data/html:/usr/share/nginx/html:ro
+      - unmined-data/conf.d:/etc/nginx/conf.d:ro
     restart: unless-stopped
 
-  # Reverse proxy for web services
+  # Tunnel for web services
   unmined-cloudflared:
     image: cloudflare/cloudflared:latest
     container_name: unmined-cloudflared
