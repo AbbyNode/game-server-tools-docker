@@ -20,29 +20,30 @@ if [ -f "$SCRIPT_DIR/log.sh" ]; then
     source "$SCRIPT_DIR/log.sh"
 fi
 
-# Entrypoint mode: handle MODPACK_URL environment variable
+# Determine operation mode
 if [ $# -eq 0 ] && [ -n "${MODPACK_URL:-}" ]; then
+    # Entrypoint mode: handle MODPACK_URL environment variable
+    MODE="entrypoint"
     if echo "${MODPACK_URL}" | grep -qE '^https?://(www\.)?curseforge\.com/minecraft/modpacks/[a-zA-Z0-9_-]+/?$'; then
         log_info "Detected CurseForge modpack page URL, resolving to server files..."
-        # Recursively call self in resolver mode
-        RESOLVED_URL="$("${BASH_SOURCE[0]}" "${MODPACK_URL}")"
-        log_info "Resolved to: ${RESOLVED_URL}"
-        export GENERIC_PACK="${RESOLVED_URL}"
+        RESOLVE_URL="${MODPACK_URL}"
     else
         log_info "Using direct URL: ${MODPACK_URL}"
         export GENERIC_PACK="${MODPACK_URL}"
+        log_info "Starting itzg/minecraft-server..."
+        exec /start
     fi
-    log_info "Starting itzg/minecraft-server..."
-    exec /start
-fi
-
-# Resolver mode: resolve URL from command line argument
-if [ $# -ne 1 ]; then
+elif [ $# -eq 1 ]; then
+    # Resolver mode: resolve URL from command line argument
+    MODE="resolver"
+    RESOLVE_URL="$1"
+else
     log_error "Usage: $0 <curseforge-modpack-url>" 2>/dev/null || echo "Usage: $0 <curseforge-modpack-url>" >&2
     exit 1
 fi
 
-MODPACK_URL="$1"
+# Resolve CurseForge URL
+MODPACK_URL="$RESOLVE_URL"
 
 # Configuration
 PAGE_SIZE=20
@@ -167,5 +168,12 @@ DOWNLOAD_URL="https://mediafilez.forgecdn.net/files/${PART1}/${PART2}/${SERVER_F
 
 log_info "Resolved download URL: $DOWNLOAD_URL" 2>/dev/null || true
 
-
-echo "$DOWNLOAD_URL"
+# Output or use the resolved URL based on mode
+if [ "$MODE" = "entrypoint" ]; then
+    log_info "Resolved to: ${DOWNLOAD_URL}"
+    export GENERIC_PACK="${DOWNLOAD_URL}"
+    log_info "Starting itzg/minecraft-server..."
+    exec /start
+else
+    echo "$DOWNLOAD_URL"
+fi

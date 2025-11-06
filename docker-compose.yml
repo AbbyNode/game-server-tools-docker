@@ -23,6 +23,7 @@ services:
       - '25565:25565'
     env_file:
       - .env
+      - .secrets
     volumes:
       - minecraft-data:/data
       - scripts:/scripts:ro
