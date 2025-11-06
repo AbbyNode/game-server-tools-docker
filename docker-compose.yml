@@ -32,19 +32,6 @@ services:
       - ./data/config:/config
     restart: unless-stopped
 
-  # borgmatic:
-  #   image: eclarift/auto-borgmatic:latest
-  #   container_name: borgmatic
-  #   env_file:
-  #     - .env
-  #     - .secrets
-  #   volumes:
-  #     - ./data:/mnt/source:ro
-  #     - ./data/backups/borg-repository:/mnt/borg-repository
-  #     - ./data/config/borgmatic:/etc/borgmatic.d
-  #     - borgmatic-data:/root
-  #   restart: unless-stopped
-
   unmined:
     image: eclarift/unmined:latest
     container_name: unmined
