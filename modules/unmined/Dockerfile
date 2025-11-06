@@ -2,6 +2,7 @@
 
 # Use .NET runtime Alpine image which has all required dependencies
 FROM mcr.microsoft.com/dotnet/runtime:9.0-alpine
+RUN apk add --no-cache bash
 
 WORKDIR /unmined
 

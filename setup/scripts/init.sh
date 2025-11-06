@@ -4,16 +4,6 @@ set -e
 echo "=== Minecraft Modpack Docker - Setup & Initialization ==="
 echo ""
 
-# Extract scripts to data/setup-scripts
-if [[ ! -d /workspace/data/setup-scripts ]]; then
-    echo "Extracting setup scripts..."
-    mkdir -p /workspace/data/setup-scripts
-    cp -r /scripts/* /workspace/data/setup-scripts/
-    chmod +x /workspace/data/setup-scripts/*.sh
-    echo "✓ Scripts extracted to data/setup-scripts/"
-    echo ""
-fi
-
 # Create .env file if it doesn't exist
 if [[ ! -f /workspace/.env ]]; then
     echo "Creating .env from template..."
@@ -30,6 +20,15 @@ if [[ ! -f /workspace/.secrets ]]; then
     echo "✓ .secrets created"
 else
     echo "✓ .secrets already exists"
+fi
+
+# Copy ofelia script to /shared-scripts
+if [[ ! -f /shared-scripts/ofelia-entrypoint.sh ]]; then
+    echo ""
+    echo "Copying ofelia entrypoint script to /shared-scripts/..."
+    cp /scripts/ofelia-entrypoint.sh /shared-scripts/ofelia-entrypoint.sh
+    chmod +x /shared-scripts/ofelia-entrypoint.sh
+    echo "✓ ofelia-entrypoint.sh copied to /shared-scripts/"
 fi
 
 # Create ofelia config if it doesn't exist

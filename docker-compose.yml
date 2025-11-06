@@ -7,6 +7,7 @@ services:
     container_name: minecraft-setup
     volumes:
       - .:/workspace
+      - scripts:/shared-scripts
     profiles:
       - setup
     restart: 'no'
@@ -64,13 +65,13 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./data/config/ofelia:/config:ro
-      - ./data/setup-scripts/ofelia-entrypoint.sh:/setup-scripts/ofelia-entrypoint.sh:ro
+      - scripts:/scripts:ro
     depends_on:
       # - borgmatic
       - mcaselector
       - unmined
     entrypoint:
-      - /setup-scripts/ofelia-entrypoint.sh
+      - /scripts/ofelia-entrypoint.sh
     command: daemon --config=/etc/ofelia/config.ini
     restart: unless-stopped
 
