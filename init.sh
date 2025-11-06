@@ -4,55 +4,66 @@ set -e
 echo "=== Minecraft Modpack Docker - Setup & Initialization ==="
 echo ""
 
+
+# ========== Paths ==========
+
 WORKSPACE="/workspace"
 SETUP="/setup"
 TEMPLATES="/templates"
 SCRIPTS_SRC="/scripts-src"
 SCRIPTS_VOL="/scripts"
 
-# ========== Base Setup Files ==========
 
-# Update docker-compose.yml with the latest version
-echo "Updating docker-compose.yml..."
-if [[ -f $WORKSPACE/docker-compose.yml ]]; then
-    timestamp=$(date +"%Y%m%d_%H%M%S")
-    echo "Backing up existing docker-compose.yml"
-    cp "${WORKSPACE}/docker-compose.yml $WORKSPACE/docker-compose.yml.${timestamp}.bak"
-    echo "✓ Backup created"
-fi
-cp $SETUP/docker-compose.yml $WORKSPACE/docker-compose.yml
-echo "✓ docker-compose.yml updated"
+# =========== Helper Functions ==========
 
-# Setup scripts virtual volume
+function ask_replace() {
+    local src_file="$1"
+    local dest_file="$2"
+
+    echo "Updating $(basename "$dest_file")..."
+    if [[ -f "$dest_file" ]]; then
+        read -p "$dest_file already exists. Overwrite? (y/n): " choice
+        if [[ $choice == "y" ]]; then
+            cp "$src_file" "$dest_file"
+            echo "✓ Replaced $(basename "$dest_file")"
+        else
+            echo "✓ Skipped $(basename "$dest_file")"
+        fi
+    else
+        mkdir -p "$(dirname "$dest_file")"
+        cp "$src_file" "$dest_file"
+        echo "✓ Created $(basename "$dest_file")"
+    fi
+}
+
+
+# ========== Docker compose ==========
+
+cp "$SETUP/docker-compose.yml" "$WORKSPACE/docker-compose.yml"
+
+
+# ========== Scripts Volume ==========
+
 echo "Updating scripts volume..."
-mkdir -p $SCRIPTS_VOL
-cp -r $SCRIPTS_SRC/* $SCRIPTS_VOL/
-chmod +x $SCRIPTS_VOL/*.sh
+mkdir -p "$SCRIPTS_VOL"
+cp -r "$SCRIPTS_SRC/"* "$SCRIPTS_VOL/"
+chmod +x "$SCRIPTS_VOL/"**/*.sh
 echo "✓ Scripts volume updated"
 
 
 # ========== Configuration Files ==========
 
-# Loop all files recursively in /templates/config and ensure they exist
+# Ensure all files from $TEMPLATES exist in $WORKSPACE
 echo "Adding missing templates..."
 if [[ ! -d $TEMPLATES ]]; then
 	echo "ERROR: No templates found!"
 fi
 
-# TODO: reduce indent
-    find $TEMPLATES -type f | while read -r template_file; do
-        relative_path="${template_file#$TEMPLATES/}"
-        target_file="${WORKSPACE}/${relative_path}"
-        target_dir=$(dirname "$target_file")
-        
-        if [[ ! -f "$target_file" ]]; then
-            mkdir -p "$target_dir"
-            cp "$template_file" "$target_file"
-            echo "✓ Created $relative_path"
-        else
-            echo "✓ $relative_path already exists"
-        fi
-    done
+for template_file in $(find "$TEMPLATES" -type f); do
+    relative_path="${template_file#$TEMPLATES/}"
+    target_file="${WORKSPACE}/${relative_path}"
+    ask_replace "$template_file" "$target_file"
+done
 
 
 echo ""

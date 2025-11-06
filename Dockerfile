@@ -3,9 +3,9 @@ RUN apk add --no-cache bash
 
 WORKDIR /setup
 
-COPY ./init.sh .
-COPY ./docker-compose.yml .
-COPY ./scripts-src /scripts-src
 COPY ./templates /templates
+COPY ./scripts-src /scripts-src
+COPY ./docker-compose.yml .
+COPY ./init.sh .
 
 ENTRYPOINT ["./init.sh"]
