@@ -1,5 +1,5 @@
 #!/bin/bash
-# Logging helpers for minecraft-modpack scripts. Source this from any script.
+# Logging helpers.
 # If LOG_FILE is set, logs are also appended there.
 
 log__ts() {
