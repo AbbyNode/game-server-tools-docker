@@ -60,7 +60,8 @@ if [[ ! -d $TEMPLATES ]]; then
 fi
 
 for template_file in $(find "$TEMPLATES" -type f); do
-    relative_path="${template_file#$TEMPLATES/}"
+    relative_path="${template_file#$TEMPLATES/}" # Remove the templates base path
+    relative_path="${relative_path%.example}" # Remove the .example suffix
     target_file="${WORKSPACE}/${relative_path}"
     ask_replace "$template_file" "$target_file"
 done
