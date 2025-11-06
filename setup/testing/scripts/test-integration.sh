@@ -26,7 +26,7 @@ test_compose_structure() {
     assert_true "grep -q 'unmined:' '$compose_file'" "unmined service defined"
     assert_true "grep -q 'nginx:' '$compose_file'" "nginx service defined"
     assert_true "grep -q 'cloudflared:' '$compose_file'" "cloudflared service defined"
-    assert_true "grep -q 'ofelia:' '$compose_file'" "ofelia service defined"
+    # Ofelia is no longer used
     
     # Check volumes are defined
     assert_true "grep -q '^volumes:' '$compose_file'" "Volumes section exists"
@@ -73,7 +73,7 @@ test_data_directory_structure() {
         "mods/config"
         "backups/borg-repository"
         "config/borgmatic"
-        "config/ofelia"
+        # Ofelia config directory removed
     )
     
     # We test that the init script references these
@@ -94,10 +94,7 @@ test_suite "Integration - Service Dependencies"
 test_service_dependencies() {
     local compose_file="$PROJECT_ROOT/docker-compose.yml"
     
-    # Ofelia should depend on services it schedules
-    assert_true "grep -A 20 'ofelia:' '$compose_file' | grep -q 'borgmatic'" "Ofelia depends on borgmatic"
-    assert_true "grep -A 20 'ofelia:' '$compose_file' | grep -q 'mcaselector'" "Ofelia depends on mcaselector"
-    assert_true "grep -A 20 'ofelia:' '$compose_file' | grep -q 'unmined'" "Ofelia depends on unmined"
+    # Ofelia removed; only validate remaining dependencies
     
     # Cloudflared should depend on nginx
     assert_true "grep -A 10 'cloudflared:' '$compose_file' | grep -q 'nginx'" "Cloudflared depends on nginx"
@@ -139,7 +136,7 @@ test_documentation() {
     # Check Architecture doc describes components
     assert_true "grep -q 'Borgmatic' '$architecture_doc'" "Architecture doc describes Borgmatic"
     assert_true "grep -q 'MCASelector' '$architecture_doc'" "Architecture doc describes MCASelector"
-    assert_true "grep -q 'Ofelia' '$architecture_doc'" "Architecture doc describes Ofelia"
+    # Ofelia removed from architecture documentation
 }
 
 test_documentation

@@ -11,8 +11,8 @@ fi
 if [ $# -gt 0 ]; then
     exec "$@"
 else
-    # Keep container running for Ofelia to execute jobs
-    echo "MCASelector is ready. Jobs are scheduled via Ofelia."
+    # Keep container running for manual or external triggers
+    echo "MCASelector is ready. Trigger jobs manually as needed."
     echo "Manual run: docker exec mcaselector /scripts/delete-chunks.sh"
     exec tail -f /dev/null
 fi

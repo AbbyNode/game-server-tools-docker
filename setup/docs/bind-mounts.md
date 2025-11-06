@@ -24,13 +24,6 @@ This document shows how paths on the host machine map to paths inside containers
 | `./data/world/` | `/world` | Minecraft world files |
 | `./data/config/` | `/config` | MCASelector configuration |
 
-## Ofelia (Job Scheduler)
-
-| Host Path | Container Path | Description |
-|-----------|----------------|-------------|
-| `ofelia/config.ini` | `/etc/ofelia/config.ini` | Ofelia job configuration |
-| `/var/run/docker.sock` | `/var/run/docker.sock` | Docker socket for container management |
-
 ## Key Configuration Files
 
 All configuration files are accessible in `./data/config/`:

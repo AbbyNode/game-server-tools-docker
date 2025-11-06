@@ -11,7 +11,6 @@ The test suite validates:
 - **Borgmatic** - Backup service configuration and scripts
 - **MCASelector** - Chunk cleanup functionality
 - **Unmined** - Map generation service
-- **Ofelia** - Job scheduling configuration
 - **Integration** - Full stack integration and dependencies
 
 ## Running Tests
@@ -45,8 +44,7 @@ chmod +x scripts/*.sh
 # Test unmined map generation
 ./scripts/test-unmined.sh
 
-# Test ofelia job scheduler
-./scripts/test-ofelia.sh
+# (Job scheduler removed; run maintenance tasks on demand)
 
 # Test full integration
 ./scripts/test-integration.sh
@@ -64,7 +62,6 @@ testing/
 │   ├── test-borgmatic.sh          # Borgmatic tests
 │   ├── test-mcaselector.sh        # MCASelector tests
 │   ├── test-unmined.sh            # Unmined tests
-│   ├── test-ofelia.sh             # Ofelia tests
 │   └── test-integration.sh        # Integration tests
 ├── lib/               # Test utilities
 │   ├── test-framework.sh          # Test assertion framework

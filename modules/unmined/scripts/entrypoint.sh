@@ -5,8 +5,8 @@ set -e
 if (( $# > 0 )); then
     exec "$@"
 else
-    # Keep container running for Ofelia to execute jobs
-    echo "Unmined is ready. Jobs are scheduled via Ofelia."
+    # Keep container running for manual or external triggers
+    echo "Unmined is ready. Trigger jobs manually as needed."
     echo "Manual run: docker exec unmined /scripts/generate-map.sh"
     exec tail -f /dev/null
 fi

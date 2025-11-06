@@ -26,7 +26,6 @@ The setup container will:
 
 - Create `.env` with default configuration
 - Create required directory structure
-- Create default `data/config/ofelia/config.ini`
 - Extract version-controlled scripts to `data/setup-scripts/`
 - Populate the shared scripts volume mounted at `/opt/shared`
 
@@ -108,12 +107,16 @@ docker exec mcaselector /scripts/delete-chunks.sh
 
 **Configuration:** `./data/config/mcaselector-options.yaml` (auto-created on first run)
 
-### Job Scheduling
+### Job Execution
 
-Customize schedules in `data/config/ofelia/config.ini` using cron syntax, then restart:
+Run maintenance tasks manually or via your preferred scheduler (e.g., host cron):
 
 ```bash
-docker compose restart ofelia
+# Chunk cleanup (on demand)
+docker exec mcaselector /scripts/delete-chunks.sh
+
+# Map generation (on demand)
+docker exec unmined /scripts/generate-map.sh
 ```
 
 ## Additional Documentation

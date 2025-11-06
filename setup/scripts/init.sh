@@ -22,24 +22,6 @@ else
     echo "✓ .secrets already exists"
 fi
 
-# Copy ofelia script to /shared-scripts
-if [[ ! -f /shared-scripts/ofelia-entrypoint.sh ]]; then
-    echo ""
-    echo "Copying ofelia entrypoint script to /shared-scripts/..."
-    cp /scripts/ofelia-entrypoint.sh /shared-scripts/ofelia-entrypoint.sh
-    chmod +x /shared-scripts/ofelia-entrypoint.sh
-    echo "✓ ofelia-entrypoint.sh copied to /shared-scripts/"
-fi
-
-# Create ofelia config if it doesn't exist
-if [[ ! -f /workspace/data/config/ofelia/config.ini ]]; then
-    echo ""
-    echo "Creating ofelia configuration..."
-    mkdir -p /workspace/data/config/ofelia
-    cp /templates/ofelia-config.ini /workspace/data/config/ofelia/config.ini
-    echo "✓ Ofelia config created at data/config/ofelia/config.ini"
-fi
-
 # Create required directories
 echo ""
 echo "Creating required directories..."

@@ -60,7 +60,6 @@ TEST_SCRIPTS=(
     "$TESTING_ROOT/scripts/test-borgmatic.sh"
     "$TESTING_ROOT/scripts/test-mcaselector.sh"
     "$TESTING_ROOT/scripts/test-unmined.sh"
-    "$TESTING_ROOT/scripts/test-ofelia.sh"
     "$TESTING_ROOT/scripts/test-integration.sh"
 )
 

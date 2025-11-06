@@ -7,7 +7,6 @@ services:
     container_name: minecraft-setup
     volumes:
       - .:/workspace
-      - scripts:/shared-scripts
     profiles:
       - setup
     restart: 'no'
@@ -57,22 +56,6 @@ services:
     depends_on:
       - nginx
     command: tunnel run
-    restart: unless-stopped
-
-  ofelia:
-    image: mcuadros/ofelia:latest
-    container_name: ofelia
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./data/config/ofelia:/config:ro
-      - scripts:/scripts:ro
-    depends_on:
-      # - borgmatic
-      - mcaselector
-      - unmined
-    entrypoint:
-      - /scripts/ofelia-entrypoint.sh
-    command: daemon --config=/etc/ofelia/config.ini
     restart: unless-stopped
 
 volumes:

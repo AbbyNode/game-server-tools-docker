@@ -20,8 +20,8 @@
 - ✅ init.sh script structure and execution
 - ✅ Directory creation (setup-scripts, config, world, mods, backups)
 - ✅ .env file handling
-- ✅ Template files (.env.example, ofelia-config.ini)
-- ✅ Template content validation (MODPACK_URL, BORG_PASSPHRASE, job definitions)
+- ✅ Template files (.env.example)
+- ✅ Template content validation (MODPACK_URL, BORG_PASSPHRASE)
 - ✅ Shared libraries structure
 - ✅ Dockerfile configuration
 - ✅ Shared scripts volume population
@@ -72,24 +72,13 @@
 - ✅ Nginx integration for serving maps
 - ✅ Cloudflared tunnel configuration
 
-### 7. Ofelia Job Scheduler (27 tests)
-- ✅ Entrypoint creates config symlink
-- ✅ Job definitions (borgmatic-backup, mcaselector-cleanup, unmined-map-generation)
-- ✅ Cron schedule format (5 fields)
-- ✅ No-overlap setting
-- ✅ Container references
-- ✅ Command paths to scripts
-- ✅ Docker socket mounting
-- ✅ Config directory mounting
-- ✅ Service dependencies
-
-### 8. Full Stack Integration (55 tests)
+### 7. Full Stack Integration (55 tests)
 - ✅ All 8 services defined in docker-compose.yml
 - ✅ Build compose configuration
 - ✅ Image tagging (eclarift/* namespace)
 - ✅ Shared scripts volume workflow (setup populates, minecraft reads)
 - ✅ Data directory structure
-- ✅ Service dependencies (ofelia → scheduled services, cloudflared → nginx)
+- ✅ Service dependencies (cloudflared → nginx)
 - ✅ Environment file usage
 - ✅ Documentation completeness (README, Architecture)
 - ✅ All Dockerfiles present
