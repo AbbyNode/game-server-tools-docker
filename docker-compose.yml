@@ -12,9 +12,8 @@ services:
     restart: 'no'
 
   minecraft-modpack:
+    image: eclarift/minecraft-modpack:latest
     container_name: minecraft-modpack
-    build:
-      context: ./minecraft-modpack
     ports:
       - '25565:25565'
     env_file:
@@ -33,18 +32,18 @@ services:
       - ./data/config:/config
     restart: unless-stopped
 
-  borgmatic:
-    image: eclarift/auto-borgmatic:latest
-    container_name: borgmatic
-    env_file:
-      - .env
-      - .secrets
-    volumes:
-      - ./data:/mnt/source:ro
-      - ./data/backups/borg-repository:/mnt/borg-repository
-      - ./data/config/borgmatic:/etc/borgmatic.d
-      - borgmatic-data:/root
-    restart: unless-stopped
+  # borgmatic:
+  #   image: eclarift/auto-borgmatic:latest
+  #   container_name: borgmatic
+  #   env_file:
+  #     - .env
+  #     - .secrets
+  #   volumes:
+  #     - ./data:/mnt/source:ro
+  #     - ./data/backups/borg-repository:/mnt/borg-repository
+  #     - ./data/config/borgmatic:/etc/borgmatic.d
+  #     - borgmatic-data:/root
+  #   restart: unless-stopped
 
   unmined:
     image: eclarift/unmined:latest
@@ -80,7 +79,7 @@ services:
       - ./data/config/ofelia:/config:ro
       - ./data/setup-scripts/ofelia-entrypoint.sh:/setup-scripts/ofelia-entrypoint.sh:ro
     depends_on:
-      - borgmatic
+      # - borgmatic
       - mcaselector
       - unmined
     entrypoint:
@@ -91,5 +90,5 @@ services:
 volumes:
   scripts:
     driver: local
-  borgmatic-data:
-    driver: local
+  # borgmatic-data:
+  #   driver: local
