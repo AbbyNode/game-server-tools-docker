@@ -18,13 +18,13 @@ FROM itzg/minecraft-server:latest
 #   MODPACK_URL=https://www.curseforge.com/minecraft/modpacks/all-the-mods-10
 #   The wrapper resolves this to a direct URL automatically
 
-# Add lib directory with shared utilities
-COPY ./lib /usr/local/lib/minecraft
-RUN chmod +x /usr/local/lib/minecraft/*.sh
+# Add logging utilities
+COPY ./scripts/log.sh /usr/local/bin/log.sh
+RUN chmod +x /usr/local/bin/log.sh
 
-# Add URL resolution wrapper script
-COPY ./scripts/resolve-url-wrapper.sh /usr/local/bin/resolve-url-wrapper.sh
-RUN chmod +x /usr/local/bin/resolve-url-wrapper.sh
+# Add CurseForge resolver entrypoint
+COPY ./scripts/resolve-curseforge-url.sh /usr/local/bin/resolve-curseforge-url.sh
+RUN chmod +x /usr/local/bin/resolve-curseforge-url.sh
 
-# Use wrapper entrypoint that resolves URLs then calls itzg entrypoint
-ENTRYPOINT ["/usr/local/bin/resolve-url-wrapper.sh"]
+# Use resolver as entrypoint (handles URL resolution and starts server)
+ENTRYPOINT ["/usr/local/bin/resolve-curseforge-url.sh"]

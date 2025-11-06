@@ -1,3 +1,6 @@
+# This file will be automatically generated/updated by the setup container.
+# For ovwerrides, use docker-compose.override.yml file.
+
 services:
   setup:
     image: eclarift/minecraft-setup:latest
