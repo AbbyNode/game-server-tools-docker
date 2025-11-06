@@ -1,10 +1,10 @@
 #!/bin/bash
 set -e
 
-# Ensure config file exists
-if [ ! -f /config/mcaselector-options.yaml ]; then
-    echo "Copying default mcaselector configuration..."
-    cp /templates/mcaselector-options.yaml /config/mcaselector-options.yaml
+# If the MCASelector jar does not exist, run the init script to download it
+if [ ! -f /mcaselector/mcaselector.jar ]; then
+    echo "MCASelector jar not found. Running initialization script."
+    /scripts/init.sh
 fi
 
 # If a command was provided, execute it
@@ -12,7 +12,8 @@ if [ $# -gt 0 ]; then
     exec "$@"
 else
     # Keep container running for manual or external triggers
+    # However, allow docker compose down to stop the container gracefully
     echo "MCASelector is ready. Trigger jobs manually as needed."
     echo "Manual run: docker exec mcaselector /scripts/delete-chunks.sh"
-    exec tail -f /dev/null
+    tail -f /dev/null
 fi

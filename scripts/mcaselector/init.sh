@@ -5,6 +5,8 @@ set -eu
 
 echo "========== MCSelector Setup =========="
 
+cd /mcaselector
+
 echo "Fetching latest MCSelector release URL"
 latest_url=$(
 	curl -fsSL "https://api.github.com/repos/Querz/mcaselector/releases/latest" |

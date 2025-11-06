@@ -1,4 +1,4 @@
 services:
   setup:
-    image: eclarift/minecraft-setup:latest
+    image: eclarift/minecraft-server-setup:latest
     build: .

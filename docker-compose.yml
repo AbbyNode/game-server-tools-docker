@@ -9,6 +9,7 @@ services:
     image: eclarift/minecraft-server-setup:latest
     container_name: setup
     volumes:
+      - scripts:/scripts
       - .:/workspace
     profiles:
       - setup

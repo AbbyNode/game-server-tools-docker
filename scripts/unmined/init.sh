@@ -5,6 +5,8 @@ set -eu
 
 echo "========== Unmined CLI Setup =========="
 
+cd /unmined
+
 echo "Downloading Unmined CLI"
 curl -fsSL -o unmined-cli.tar.gz "https://unmined.net/download/unmined-cli-linux-musl-x64-dev/"
 
