@@ -1,3 +1,4 @@
+# Run this in the workspace where you want to set up Minecraft modpack server files.
 
 services:
   setup:
@@ -8,4 +9,3 @@ services:
     profiles:
       - setup
     restart: 'no'
-

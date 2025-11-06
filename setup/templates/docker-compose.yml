@@ -1,7 +1,19 @@
 # This file will be automatically generated/updated by the setup container.
-# For ovwerrides, use docker-compose.override.yml file.
+# For overrides, use docker-compose.override.yml file.
 
 services:
+  # To rerun setup, use `docker compose --profile setup run --pull always --rm setup`
+  # This will update all submodules to the latest images as well.
+  setup:
+    image: eclarift/minecraft-setup:latest
+    container_name: minecraft-setup
+    volumes:
+      - .:/workspace
+    profiles:
+      - setup
+    restart: no
+  
+  # The core Minecraft server container
   minecraft-modpack:
     image: itzg/minecraft-server:latest
     container_name: minecraft-modpack
@@ -15,29 +27,33 @@ services:
     tty: true
     restart: unless-stopped
 
+  # Application to manage chunk cleanup
   mcaselector:
     image: eclipse-temurin:25-jre-alpine
     container_name: mcaselector
     volumes:
       - ./data/world:/world
       - ./data/config:/config
-    restart: unless-stopped
+    restart: no
 
-  unmined:
+  # Application to generate web-based maps of the Minecraft world
+  unmined-map-generator:
     image: mcr.microsoft.com/dotnet/runtime:9.0-alpine
-    container_name: unmined
+    container_name: unmined-map-generator
     volumes:
       - ./data/world:/world:ro
       - ./data/unmined-map:/output
-    restart: unless-stopped
+    restart: no
 
-  nginx:
+  # Webserver to serve the generated maps
+  unmined-map-webserver:
     image: nginx:alpine
-    container_name: nginx
+    container_name: unmined-map-webserver
     volumes:
       - ./data/unmined-map:/usr/share/nginx/html:ro
     restart: unless-stopped
 
+  # Reverse proxy for web services
   cloudflared:
     image: cloudflare/cloudflared:latest
     container_name: cloudflared
@@ -45,7 +61,7 @@ services:
       - .env
       - .secrets
     depends_on:
-      - nginx
+      - unmined-map-webserver
     command: tunnel run
     restart: unless-stopped
 
