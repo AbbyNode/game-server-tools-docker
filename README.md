@@ -22,22 +22,9 @@ Start the services
 docker compose up -d
 ```
 
-The setup container will:
-
-- Create `.env` with default configuration
-- Create required directory structure
-- Extract version-controlled scripts to `data/setup-scripts/`
-- Populate the shared scripts volume mounted at `/opt/shared`
-
 ## Configuration
 
 Edit `.env` to configure your modpack and server properties:
-
-**Modpack URL - Direct server file URL** (recommended):
-
-```bash
-MODPACK_URL=https://mediafilez.forgecdn.net/files/7121/795/ServerFiles-4.14.zip
-```
 
 **Modpack URL - CurseForge page URL** (automatic resolution):
 
@@ -45,26 +32,11 @@ MODPACK_URL=https://mediafilez.forgecdn.net/files/7121/795/ServerFiles-4.14.zip
 MODPACK_URL=https://www.curseforge.com/minecraft/modpacks/all-the-mods-10
 ```
 
-**Set backup passphrase** (required for encryption):
+**Modpack URL - Direct server file URL**:
 
 ```bash
-BORG_PASSPHRASE=your-strong-passphrase
+MODPACK_URL=https://mediafilez.forgecdn.net/files/7121/795/ServerFiles-4.14.zip
 ```
-
-```bash
-MODPACK_URL=https://www.curseforge.com/minecraft/modpacks/all-the-mods-10
-```
-
-## How It Works
-
-This setup uses a hybrid approach:
-
-- **Base**: [itzg/minecraft-server](https://github.com/itzg/docker-minecraft-server) (community-maintained, 1000+ contributors)
-- **Added**: CurseForge page URL resolution without API key
-- **Supports**: Custom start scripts if present in modpack
-- **Fallback**: itzg's optimized launcher with Aikar flags
-
-All server files are accessible in `./data/` (world, config, mods, logs).
 
 ## Server Management
 
@@ -86,43 +58,3 @@ docker attach minecraft-modpack  # Ctrl+P, Ctrl+Q to detach
 docker compose down
 docker compose up --pull missing -d
 ```
-
-## Automated Tasks
-
-### Chunk Cleanup (Daily 7:00 AM)
-
-Deletes old chunks based on age and player activity to save disk space.
-
-**Default rules:**
-
-- Not updated in 30 days + <2 hours player time
-- Not updated in 7 days + <1 hour player time
-- Not updated in 12 hours + <15 minutes player time
-- Not updated in 1 hour + <5 minutes player time
-
-```bash
-# Manual cleanup
-docker exec mcaselector /scripts/delete-chunks.sh
-```
-
-**Configuration:** `./data/config/mcaselector-options.yaml` (auto-created on first run)
-
-### Job Execution
-
-Run maintenance tasks manually or via your preferred scheduler (e.g., host cron):
-
-```bash
-# Chunk cleanup (on demand)
-docker exec mcaselector /scripts/delete-chunks.sh
-
-# Map generation (on demand)
-docker exec unmined /scripts/generate-map.sh
-```
-
-## Additional Documentation
-
-- **[Architecture](setup/docs/Architecture.md)** - System design and component overview
-- **[Bind Mounts](setup/docs/bind-mounts.md)** - Host-container path mappings
-- **[MCASelector CLI](modules/mcaselector/docs/CLI-Mode.md)** - Command-line reference
-- **[Chunk Filters](modules/mcaselector/docs/Chunk-Filter.md)** - Chunk filtering options
-- **[Testing](setup/testing/README.md)** - Test suite for all features
