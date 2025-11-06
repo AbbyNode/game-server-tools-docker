@@ -1,10 +1,11 @@
 FROM alpine:latest
 RUN apk add --no-cache bash
 
-COPY ./scripts /scripts
-RUN chmod +x /scripts/*.sh
+WORKDIR /setup
 
+COPY ./init.sh .
+COPY ./docker-compose.yml .
+COPY ./scripts-src /scripts-src
 COPY ./templates /templates
-COPY ./docker-compose.yml /templates/docker-compose.yml
 
-ENTRYPOINT ["/scripts/init.sh"]
+ENTRYPOINT ["./init.sh"]

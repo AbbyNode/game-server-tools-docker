@@ -4,10 +4,17 @@ set -e
 echo "=== Minecraft Modpack Docker - Setup & Initialization ==="
 echo ""
 
+WORKSPACE="/workspace"
+SETUP="/setup"
+TEMPLATES="/templates"
+SCRIPTS_SRC="/scripts-src"
+SCRIPTS_VOL="/scripts"
+
+# TODO: use above variables across this script
 
 # ========== Base Setup Files ==========
 
-# Update docker-compose.yml with the latest version from templates
+# Update docker-compose.yml with the latest version
 echo "Updating docker-compose.yml..."
 if [[ -f /workspace/docker-compose.yml ]]; then
     timestamp=$(date +"%Y%m%d_%H%M%S")
@@ -15,18 +22,34 @@ if [[ -f /workspace/docker-compose.yml ]]; then
     cp /workspace/docker-compose.yml /workspace/docker-compose.yml.bak_"$timestamp"
     echo "✓ Backup created"
 fi
-cp /templates/docker-compose.yml /workspace/docker-compose.yml
+cp /setup/docker-compose.yml /workspace/docker-compose.yml
 echo "✓ docker-compose.yml updated"
 
-# Setup scripts virtual volume using /workspace/scripts
+# Setup scripts virtual volume
 echo "Updating scripts volume..."
 mkdir -p /scripts
-cp -r /workspace/scripts/* /scripts/
+cp -r /scripts-src/* /scripts/
 chmod +x /scripts/*.sh
 echo "✓ Scripts volume updated"
 
 
 # ========== Configuration Files ==========
+
+# Loop all files recursively in /templates/config and ensure they exist
+echo "Syncing configuration files from templates..."
+if [[ -d /templates/config ]]; then
+    find /templates/config -type f | while read -r template_file; do
+        relative_path="${template_file#/templates/config/}"
+        target_file="/workspace/$relative_path"
+        target_dir=$(dirname "$target_file")
+        
+        if [[ ! -f "$target_file" ]]; then
+            mkdir -p "$target_dir"
+            cp "$template_file" "$target_file"
+            echo "✓ Created $relative_path"
+        fi
+    done
+fi
 
 # Create .env file if it doesn't exist
 if [[ ! -f /workspace/.env ]]; then
