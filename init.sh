@@ -52,6 +52,14 @@ for template_file in $(find "$TEMPLATES" -type f); do
 done
 
 
+# ========== Minecraft Data Directories ==========
+
+mkdir -p "$WORKSPACE/data/world"
+mkdir -p "$WORKSPACE/data/logs"
+mkdir -p "$WORKSPACE/data/mods/jars"
+mkdir -p "$WORKSPACE/data/mods/config"
+chown -R 1000:1000 "$WORKSPACE/data"
+
 echo ""
 echo "=== Setup Complete ==="
 echo ""
