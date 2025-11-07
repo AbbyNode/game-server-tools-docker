@@ -18,7 +18,7 @@ Easy all-in-one Docker setup for hosting a modded Minecraft server.
 curl -O https://raw.githubusercontent.com/AbbyNode/minecraft-modpack-docker/main/docker-compose.yml
 ```
 
-###  Run setup container
+### Run setup container
 
 Creates .env, directories, scripts, and secrets templates.  
 
