@@ -1,0 +1,24 @@
+# https://unmined.net/
+
+FROM mcr.microsoft.com/dotnet/runtime:9.0-alpine
+
+RUN apk add --no-cache bash curl
+
+WORKDIR /unmined
+
+# Unmined
+RUN echo "========== Unmined CLI Setup ==========" && \
+    echo "[Unmined CLI] Downloading" && \
+    curl -fsSL -o unmined-cli.tar.gz "https://unmined.net/download/unmined-cli-linux-musl-x64-dev/" && \
+    echo "[Unmined CLI] Extracting" && \
+    tar -xzf unmined-cli.tar.gz && \
+    rm -f unmined-cli.tar.gz && \
+    echo "[Unmined CLI] Preparing executable" && \
+    mv unmined-cli_* unmined-cli && \
+    chmod +x unmined-cli/unmined-cli && \
+    echo "========== Unmined CLI setup complete =========="
+
+# Custom helper scripts
+COPY generate-map.sh .
+
+ENTRYPOINT ["/unmined/unmined-cli/unmined-cli"]
