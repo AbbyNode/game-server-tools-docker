@@ -1,0 +1,25 @@
+# https://github.com/cloudflare/cloudflared
+
+FROM debian:stable-slim
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        curl \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /cloudflared
+
+# Cloudflared
+RUN echo "========== Installing Cloudflared ==========" && \
+    echo "[Cloudflared] Adding Cloudflare package repository" && \
+    mkdir -p --mode=0755 /usr/share/keyrings && \
+    curl -fsSL https://pkg.cloudflare.com/cloudflare-main.gpg \
+        | tee /usr/share/keyrings/cloudflare-main.gpg >/dev/null && \
+    echo 'deb [signed-by=/usr/share/keyrings/cloudflare-main.gpg] https://pkg.cloudflare.com/cloudflared any main' \
+        | tee /etc/apt/sources.list.d/cloudflared.list && \
+    echo "[Cloudflared] Installing cloudflared package" && \
+    apt-get update && apt-get install cloudflared
+
+COPY entrypoint.sh .
+
+ENTRYPOINT ["entrypoint.sh"]

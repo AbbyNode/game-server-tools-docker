@@ -2,6 +2,10 @@
 
 FROM mcr.microsoft.com/dotnet/runtime:9.0-alpine
 
+RUN apk update && \
+    apk add ca-certificates && \
+    update-ca-certificates
+
 RUN apk add --no-cache bash curl
 
 WORKDIR /unmined
