@@ -1,6 +1,8 @@
 
 # What to do
 
+* make them all custom Dockerfile tbh lmao
+
 * minecraft overrides in config
 * Make the tools run automatically on schedule
   * borgmatic

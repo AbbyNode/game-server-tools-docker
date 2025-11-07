@@ -40,9 +40,8 @@ services:
     tty: true
     restart: unless-stopped
 
-  # ========== Backups ==========
 
-  # Application to handle backups using BorgBackup
+  # ========== Backups ==========
   borgmatic:
     image: rmohr/borgmatic:latest
     container_name: borgmatic
@@ -61,8 +60,6 @@ services:
     restart: no
 
   # ========== World Maintenance ==========
-
-  # Application to manage chunk cleanup
   mcaselector:
     image: eclipse-temurin:25-jre-noble
     container_name: mcaselector
@@ -75,7 +72,7 @@ services:
 
   # ========== Web Map Generation ==========
 
-  # Application to generate web-based maps of the Minecraft world
+  # Generate web-based maps of the Minecraft world
   unmined-generator:
     image: mcr.microsoft.com/dotnet/runtime:9.0-bookworm-slim
     container_name: unmined-generator
@@ -95,15 +92,17 @@ services:
       - ./config/nginx:/etc/nginx/conf.d:ro
     restart: unless-stopped
 
-  # Tunnel for web services
+  # Tunnel for web server
   unmined-cloudflared:
     image: cloudflare/cloudflared:latest
     container_name: unmined-cloudflared
     secrets:
       - cloudflared_token
+    volumes:
+      - scripts:/scripts:ro
     depends_on:
       - unmined-webserver
-    command: /bin/sh -c "cloudflared tunnel run --token $(cat /run/secrets/cloudflared_token)"
+    entrypoint: ["/scripts/cloudflared/tunnel.sh"]
     restart: unless-stopped
 
   # ==========
